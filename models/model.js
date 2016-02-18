@@ -49,8 +49,8 @@ var Tag = sequelize.define('tag', {
 var User = sequelize.define('user', {
     authId: Sequelize.STRING,
     password: Sequelize.STRING,
-    theme: Sequelize.STRING,
-    language: Sequelize.STRING,
+    theme: {type: Sequelize.STRING, defaultValue : 'light'},
+    language: {type: Sequelize.STRING, defaultValue: 'en'},
     firstName: Sequelize.STRING,
     lastName: Sequelize.STRING,
     about: Sequelize.STRING,
