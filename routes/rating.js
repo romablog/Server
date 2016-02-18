@@ -1,30 +1,33 @@
 var Model = require('../models/model.js').Model;
 var Promise = require('bluebird');
+
 exports.getRatedCreatives = function (req, res) {
-    var ratedPosts = Model.Creative.findAll()
-        .then(function (creatives) {
-            var ratings = Promise.all(creatives.map(function (creative) {
-                return creative.getCreativeRatings();
-            }));
-            return [creatives, ratings];
-        })
+    var ratedPosts = Model.Creative.findAll().then(function (creatives) {
+        return allPostsInformation(creatives);
+    });
+    ratedPosts.then(function (posts) {
+        res.send(posts);
+    }, function (err) {
+        res.sendStatus(402)
+    });
+};
+
+function allPostsInformation(creatives) {
+    var ratings = Promise.all(creatives.map(function (creative) {
+        return creative.getCreativeRatings();
+    }));
+    return Promise.all([creatives, ratings])
         .spread(
             Model.AddScores
         ).then(
             Model.AddUsers
         ).then(function(creatives) {
             return creatives.sort().reverse().slice(0, 50);
-        });
-    ratedPosts.then(
-        Model.AddTags
-    ).then(function (posts) {
-        //console.log(posts);
-        res.send(posts);
-    }, function (err) {
-        //console.log(err);
-        res.sendStatus(402)
-    });
-};
+        }).then(
+            Model.AddTags
+        );
+}
+exports.allPostsInformation = allPostsInformation;
 
 exports.rateCreative = function (req, res) {
     var score = req.body.score;

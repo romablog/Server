@@ -7,6 +7,7 @@ module.exports = function(app) {
     app.post('/logout', require('./logout').post);
     app.post('/post/save', require('./post').post);
     app.get('/posts/:id', require('./post').allForUser);
+    app.get('/post/:id', require('./post').getSpecificPost);
     app.get('/currentUser', require('./user').get);
     app.get('/ratedarticles', require('./rating').getRatedCreatives);
     app.post('/rate', require('./rating').rateCreative);
