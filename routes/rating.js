@@ -13,7 +13,7 @@ exports.getRatedCreatives = function (req, res) {
         ).then(
             Model.AddUsers
         ).then(function(creatives) {
-            return creatives.sort().reverse().slice(0, 10);
+            return creatives.sort().reverse().slice(0, 50);
         });
     ratedPosts.then(
         Model.AddTags

@@ -5,10 +5,9 @@ var fs = require('fs');
 
 exports.post = function (req, res) {
 
-    var path = __dirname + '/' + req.session.user + '.jpg';
+    var path = process.env.HOME + req.session.user + '.jpg';
     var buff = new Buffer(req.body.img.replace(/^data:image\/(png|gif|jpeg);base64,/, ''), 'base64');
     fs.writeFile(path, buff);
-    //console.log(path);
     var creative = new Promise(function(resolve, reject){
         cloudinary.uploadToCloudinary(path, function(upload) {
             fs.unlink(path);
@@ -59,13 +58,8 @@ exports.post = function (req, res) {
 
 
 exports.allForUser = function (req, res) {
-    var authId = req.params.id;
-    Model.User.findOne({
-        where: {
-            authId: authId
-        }
-    }).then(function (user) {
-        //console.log("TAGS", user.tags);
+    Model.User.findById(req.params.id)
+        .then(function (user) {
         return user.getCreatives()
     }).then(function (creatives) {
         return [creatives, Promise.all(creatives.map(function (creative) {
@@ -76,7 +70,6 @@ exports.allForUser = function (req, res) {
     ).then(
         Model.AddTags
     ).then(function (creatives) {
-       // console.log("QWERTY", creatives);
         res.send(creatives);
     }, function () {
         res.sendStatus(403);

@@ -14,3 +14,21 @@ exports.get = function(req, res, next) {
             }
         })
 };
+
+exports.setThemeAndLang = function (req, res) {
+    console.log(req.body);
+    Model.User.findOne({where: {authId: req.session.user}})
+        .then(function (user) {
+            if (user) {
+                user.theme = req.body.theme;
+                user.language = req.body.language;
+                return user.save();
+            } else {
+                res.sendStatus(403);}
+        })
+        .then(function (user) {
+            if (user) {
+                res.sendStatus(200)
+            }
+        });
+};
