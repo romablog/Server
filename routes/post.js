@@ -5,7 +5,7 @@ var fs = require('fs');
 
 exports.post = function (req, res) {
 
-    var path = process.env.HOME + req.session.user + '.jpg';
+    var path = process.env.HOME + '/' + req.session.user + '.jpg';
     var buff = new Buffer(req.body.img.replace(/^data:image\/(png|gif|jpeg);base64,/, ''), 'base64');
     fs.writeFile(path, buff);
     var creative = new Promise(function(resolve, reject){
@@ -77,10 +77,9 @@ exports.allForUser = function (req, res) {
 };
 
 exports.getSpecificPost = function(req, res) {
-    var creativeId = req.body.id;
+    var creativeId = req.params.id;
     Model.Creative.findById(creativeId)
         .then(function(post) {
             res.send(post);
         });
-
 };
