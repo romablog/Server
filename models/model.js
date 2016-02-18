@@ -164,25 +164,25 @@ var Model = {
     }
 };
 
-sequelize.sync({}).then(function () {
-    return Promise.all([Model.Creative.create({
-        title: 'title',
-        article: 'article'
-    }), Model.Creative.create({
-        title: 'title2',
-        article: 'article2'
-    }),
-        Model.CreativeRating.create({
-            score: -3
-        }), Model.User.create(
-            {firstName: 'JOHN', lastName: 'DOE', email: 'roma@roma.roma', password: 'roma', authId: "12345"})])
-}).spread(function (creative1, creative2, rating, johnny) {
-    // console.log(johnny);
-    return [
-        johnny.addCreative(creative1),
-        johnny.addCreative(creative2),
-        creative1.addCreativeRating(rating)
-    ]
+sequelize.sync().then(function () {
+//    return Promise.all([Model.Creative.create({
+//        title: 'title',
+//        article: 'article'
+//    }), Model.Creative.create({
+//        title: 'title2',
+//        article: 'article2'
+//    }),
+//        Model.CreativeRating.create({
+//            score: -3
+//        }), Model.User.create(
+//            {firstName: 'JOHN', lastName: 'DOE', email: 'roma@roma.roma', password: 'roma', authId: "12345"})])
+//}).spread(function (creative1, creative2, rating, johnny) {
+//    // console.log(johnny);
+//    return [
+//        johnny.addCreative(creative1),
+//        johnny.addCreative(creative2),
+//        creative1.addCreativeRating(rating)
+//    ]
 });
 
 exports.Model = Model;

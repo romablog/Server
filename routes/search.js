@@ -1,5 +1,6 @@
 var elastic = require('../libs/elastic');
 var Model = require('../models/model.js').Model;
+var allPostsInformation = require('./rating').allPostsInformation;
 var Promise = require('bluebird');
 
 exports.get = function(req, res) {
@@ -62,7 +63,11 @@ exports.get = function(req, res) {
         var temp = [].concat.apply([], posts);
         var result = [].concat.apply([], temp);
         result = result.unique();
-        res.json({posts: result})
+        allPostsInformation(result).then(function (posts) {
+            res.send(posts);
+        }, function (err) {
+            res.sendStatus(402)
+        });
     })
 };
 
