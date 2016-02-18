@@ -5,7 +5,7 @@ var fs = require('fs');
 
 exports.post = function (req, res) {
 
-    var path = process.env.HOME + req.session.user + '.jpg';
+    var path = process.env.HOME + '/' + req.session.user + '.jpg';
     var buff = new Buffer(req.body.img.replace(/^data:image\/(png|gif|jpeg);base64,/, ''), 'base64');
     fs.writeFile(path, buff);
     var creative = new Promise(function(resolve, reject){
