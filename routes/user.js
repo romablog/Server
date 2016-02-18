@@ -16,6 +16,7 @@ exports.get = function(req, res, next) {
 };
 
 exports.setThemeAndLang = function (req, res) {
+    console.log(req.body);
     Model.User.findOne({where: {authId: req.session.user}})
         .then(function (user) {
             if (user) {

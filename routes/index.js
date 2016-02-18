@@ -11,6 +11,8 @@ module.exports = function(app) {
     app.get('/ratedarticles', require('./rating').getRatedCreatives);
     app.post('/rate', require('./rating').rateCreative);
 
+    app.post('/updateuser', require('./user').setThemeAndLang);
+
     app.get('/search/:input', require('./search').get);
 
     app.get('/auth/facebook', passport.authenticate('facebook'));

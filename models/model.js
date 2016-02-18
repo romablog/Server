@@ -164,7 +164,7 @@ var Model = {
     }
 };
 
-sequelize.sync({force: true}).then(function () {
+sequelize.sync({}).then(function () {
     return Promise.all([Model.Creative.create({
         title: 'title',
         article: 'article'
