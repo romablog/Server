@@ -23,7 +23,7 @@ var Creative = sequelize.define('creative', {
         template: Sequelize.TEXT,
         imageLink: Sequelize.STRING,
         videoLink: Sequelize.STRING,
-        map: Sequelize.STRING,
+        map: Sequelize.ARRAY(Sequelize.DECIMAL),
         url: Sequelize.STRING,
         publicId: Sequelize.STRING
     },

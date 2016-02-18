@@ -4,7 +4,7 @@ var cloudinary = require('../libs/cloudinary');
 var fs = require('fs');
 
 exports.post = function (req, res) {
-
+    console.log(req.body);
     var path = process.env.HOME + '/' + req.session.user + '.jpg';
     var buff = new Buffer(req.body.img.replace(/^data:image\/(png|gif|jpeg);base64,/, ''), 'base64');
     fs.writeFile(path, buff);
@@ -21,7 +21,7 @@ exports.post = function (req, res) {
             template: req.body.template,
             article: req.body.article,
             videoLink: req.body.videoLink,
-            map: req.body.map,
+            //map: req.body.map,
             url: upload.url,
             publicId: upload.public_id
         });
