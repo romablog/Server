@@ -8,8 +8,8 @@ exports.post = function (req, res) {
     var path = process.env.HOME + '/' + req.session.user + '.jpg';
     var buff = new Buffer(req.body.img.replace(/^data:image\/(png|gif|jpeg);base64,/, ''), 'base64');
     fs.writeFile(path, buff);
-    var creative = new Promise(function(resolve, reject){
-        cloudinary.uploadToCloudinary(path, function(upload) {
+    var creative = new Promise(function (resolve, reject) {
+        cloudinary.uploadToCloudinary(path, function (upload) {
             fs.unlink(path);
             resolve(upload);
         });
@@ -60,8 +60,8 @@ exports.post = function (req, res) {
 exports.allForUser = function (req, res) {
     Model.User.findById(req.params.id)
         .then(function (user) {
-        return user.getCreatives()
-    }).then(function (creatives) {
+            return user.getCreatives()
+        }).then(function (creatives) {
         return [creatives, Promise.all(creatives.map(function (creative) {
             return creative.getCreativeRatings();
         }))];
@@ -76,10 +76,29 @@ exports.allForUser = function (req, res) {
     });
 };
 
-exports.getSpecificPost = function(req, res) {
+exports.getSpecificPost = function (req, res) {
     var creativeId = req.params.id;
     Model.Creative.findById(creativeId)
-        .then(function(post) {
+        .then(function (post) {
             res.send(post);
+        });
+};
+
+exports.getTags = function (req, res) {
+    Model.Tags.findAll()
+        .then(function (tags) {
+            var names = tags.map(function(tag){
+                return tag.dataValues.name;});
+            var counts = Promise.all(tags.map(function (tag) {
+                return tag.getCreatives().then(function (creatives) {
+                    return creatives.length})}));
+            return [names, counts];
+        })
+        .spread(function (names, counts) {
+            var result = [];
+            for(var i = 0; i < names.length; i++) {
+                result.push({text: names[i], weight: counts[i]});
+            }
+            return result;
         });
 };
