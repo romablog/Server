@@ -80,7 +80,7 @@ exports.getSpecificPost = function (req, res) {
 };
 
 exports.getTags = function (req, res) {
-    Model.Tags.findAll()
+    Model.Tag.findAll()
         .then(function (tags) {
             var names = tags.map(function(tag){
                 return tag.dataValues.name;});
@@ -93,8 +93,9 @@ exports.getTags = function (req, res) {
             var result = [];
             for(var i = 0; i < names.length; i++) {
                 result.push({text: names[i], weight: counts[i]});
+                result[i].link = 'http://localhost:8000/app/#/main/tag/' + names[i];
             }
-            return result;
+            res.send(result);
         });
 };
 

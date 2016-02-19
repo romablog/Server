@@ -13,6 +13,7 @@ module.exports = function(app) {
 
     app.get('/tags', require('./post').getTags);
     app.get('/currentUser', require('./user').get);
+    app.get('/user/:id', require('./user').getSpecificUser);
     app.get('/ratedarticles', require('./rating').getRatedCreatives);
     app.post('/rate', require('./rating').rateCreative);
     app.post('/avatar', require('./user').setUserAvatar);

@@ -54,3 +54,15 @@ exports.setUserAvatar = function (req, res) {
         }
     });
 };
+
+exports.getSpecificUser = function(req, res) {
+    Model.User.findById(req.params.id)
+        .then(function(user) {
+            console.log("USERRRRRRRRRRRRRRRRRRRRRRRRRRR", user);
+            if (user) {
+                res.send(user);
+            } else {
+                res.sendStatus(403);
+            }
+        })
+};
