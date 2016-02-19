@@ -35,7 +35,7 @@ var Creative = sequelize.define('creative', {
         }
     });
 
-var Avatar = sequelize.define('icon', {
+var Avatar = sequelize.define('avatar', {
     url: Sequelize.STRING,
     publicId: Sequelize.STRING
 });

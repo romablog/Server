@@ -6,7 +6,7 @@ exports.get = function(req, res, next) {
     //var email =  req.body.email;
     var user = req.session.user;
     console.log(user);
-    Model.User.findOne({where: {authId: user}})
+    Model.User.findOne({where: {authId: user}, include: [Model.Avatar]})
         .then(function(user) {
             if (user) {
                 req.session.user = user.authId;
@@ -45,7 +45,7 @@ exports.setUserAvatar = function (req, res) {
     });
 
     Promise.all([user, icon]).spread(function(user, icon){
-        return "ok";//TODO user.addAvatar();
+        return user.setAvatar(icon);
     }).then(function(result){
         if (result){
             res.sendStatus(200)
