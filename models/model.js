@@ -190,7 +190,7 @@ var Model = {
     DestroyTags: DestroyTags
 };
 
-sequelize.sync({force:true}).then(function () {
+sequelize.sync({}).then(function () {
     //return Model.User.create({firstName: 'JOHN', lastName: 'DOE', email: 'roma@roma.roma', password: 'roma', authId: "12345", language:"en", theme: "light"});
     //return Promise.all([
     //        Model.Tag.create({
