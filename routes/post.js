@@ -75,7 +75,13 @@ exports.getSpecificPost = function (req, res) {
     var creativeId = req.params.id;
     Model.Creative.findById(creativeId)
         .then(function (post) {
-            res.send(post);
+            return [post];
+        })
+        .then(
+            Model.AddTags
+        )
+        .then(function(creatives){
+            res.send(creatives[0]);
         });
 };
 
