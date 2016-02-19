@@ -35,7 +35,7 @@ var Creative = sequelize.define('creative', {
         }
     });
 
-var Icon = sequelize.define('icon', {
+var Avatar = sequelize.define('icon', {
     url: Sequelize.STRING,
     publicId: Sequelize.STRING
 });
@@ -95,10 +95,12 @@ Creative.hasMany(CreativeRating);
 Creative.hasMany(Comment);
 Comment.belongsTo(User);
 
+User.hasOne(Avatar);
+
 CommentRating.belongsTo(User);
 Comment.hasMany(CommentRating);
 
-User.hasOne(Icon);
+User.hasOne(Avatar);
 
 var Model = {
     Comment: Comment,
@@ -109,7 +111,7 @@ var Model = {
     Medal: Medal,
     Category: Category,
     Tag: Tag,
-    Icon: Icon,
+    Avatar: Avatar,
     CreativeRating: CreativeRating,
     AddScores: function (creatives, ratings) {
         var sums = ratings.map(function (ratings) {

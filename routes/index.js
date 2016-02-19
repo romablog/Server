@@ -12,6 +12,7 @@ module.exports = function(app) {
     app.get('/currentUser', require('./user').get);
     app.get('/ratedarticles', require('./rating').getRatedCreatives);
     app.post('/rate', require('./rating').rateCreative);
+    app.post('/avatar', require('./user').setUserAvatar);
 
     app.post('/updateuser', require('./user').setThemeAndLang);
 

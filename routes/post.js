@@ -5,23 +5,18 @@ var fs = require('fs');
 
 exports.post = function (req, res) {
     console.log(req.body);
-    var path = process.env.HOME + '/' + req.session.user + '.jpg';
-    var buff = new Buffer(req.body.img.replace(/^data:image\/(png|gif|jpeg);base64,/, ''), 'base64');
-    fs.writeFile(path, buff);
-    var creative = new Promise(function (resolve, reject) {
-        cloudinary.uploadToCloudinary(path, function (upload) {
-            fs.unlink(path);
-            resolve(upload);
-        });
-    }).then(function (upload) {
+    var creative = cloudinary.uploadBase64(req.body.img, req.session.user).then(function (upload) {
         console.log(upload);
+        var map;
+        if (req.body.map)
+            map = [req.body.map.currentX, req.body.map.currentY, req.body.map.pointX, req.body.map.pointY];
         return Model.Creative.create({
             title: req.body.title,
             description: req.body.description,
             template: req.body.template,
             article: req.body.article,
             videoLink: req.body.videoLink,
-            //map: req.body.map,
+            map: map,
             url: upload.url,
             publicId: upload.public_id
         });
@@ -101,4 +96,12 @@ exports.getTags = function (req, res) {
             }
             return result;
         });
+};
+
+exports.delete = function (req,res) {
+    Model.Creative.findOne({where: {id: req.params.id}})
+        .then(function (creative) {
+
+        });
+
 };
