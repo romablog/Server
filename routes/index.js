@@ -5,9 +5,12 @@ module.exports = function(app) {
     app.post('/login', require('./login').post);
     app.post('/registry', require('./registry').post);
     app.post('/logout', require('./logout').post);
+
     app.post('/post/save', require('./post').post);
-    app.get('/posts/:id', require('./post').allForUser);
     app.get('/post/:id', require('./post').getSpecificPost);
+    app.delete('/post/:id', require('./post').delete);
+    app.get('/posts/:id', require('./post').allForUser);
+
     app.get('/tags', require('./post').getTags);
     app.get('/currentUser', require('./user').get);
     app.get('/ratedarticles', require('./rating').getRatedCreatives);

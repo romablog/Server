@@ -101,7 +101,11 @@ exports.getTags = function (req, res) {
 exports.delete = function (req,res) {
     Model.Creative.findOne({where: {id: req.params.id}})
         .then(function (creative) {
-
+            return creative.destroy();
+        }).then(function(result){
+            if (result)
+                res.sendStatus(200);
+            else
+                res.sendStatus(403)
         });
-
 };
