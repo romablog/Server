@@ -9,7 +9,7 @@ exports.post = function(req, res, next) {
         .then(function(user) {
             //console.log(user);
             if (!user) {
-              res.sendStatus(404);
+              res.sendStatus(403);
             } else {
 
                 req.session.user = user.authId;

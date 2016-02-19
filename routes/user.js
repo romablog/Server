@@ -26,13 +26,30 @@ exports.setThemeAndLang = function (req, res) {
                 user.language = req.body.language;
                 return user.save();
             } else {
-                res.sendStatus(403);}
+                res.sendStatus(403);
+            }
         })
         .then(function (user) {
             if (user) {
-                res.sendStatus(200)
+                res.sendStatus(200);
             }
         });
+};
+
+exports.updateUser = function (req, res) {
+    Model.User.findOne({where:{authId: req.session.user}}).then(function(user){
+        return user.update({
+            firstName: req.body.firstName || user.firstName,
+            lastName: req.body.lastName || user.lastName,
+            about: req.body.about || user.about
+        })
+    }).then(function(result){
+        if (result){
+            res.sendStatus(200)
+        } else {
+            res.sendStatus(403)
+        }
+    })
 };
 
 exports.setUserAvatar = function (req, res) {

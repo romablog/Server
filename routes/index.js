@@ -19,6 +19,7 @@ module.exports = function(app) {
     app.post('/avatar', require('./user').setUserAvatar);
 
     app.post('/updateuser', require('./user').setThemeAndLang);
+    app.post('/update',require('./user').updateUser);
 
     app.get('/search/:input', require('./search').get);
 
