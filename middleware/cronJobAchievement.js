@@ -2,7 +2,7 @@ var CronJob = require('cron').CronJob;
 var Model = require('../models/model.js').Model;
 var Promise = require('bluebird');
 
-var jobWeek = new CronJob('* * * * * 1', function() {
+var jobWeek = new CronJob('*/10 * * * * *', function() { //'* * * * * 1'
     console.log("job start jobWeek", new Date());
     var users = Model.User.findAll();
 
@@ -28,7 +28,7 @@ var jobWeek = new CronJob('* * * * * 1', function() {
     })
 }, function () {}, true);
 
-var jobDay = new CronJob('0 0 */23 * * *', function() {
+var jobDay = new CronJob('*/5 * * * * *', function() {   //'0 0 */23 * * *'
     console.log("job start jobDay", new Date());
     var users = Model.User.findAll();
     var rating = users.map(function(user){
@@ -63,7 +63,7 @@ var jobDay = new CronJob('0 0 */23 * * *', function() {
     });
 }, function(){}, true);
 
-var jobHour = new CronJob('0 */59 * * * *', function() {
+var jobHour = new CronJob('*/3 * * * * *', function() {        //'0 */59 * * * *'
     console.log("job start jobHour", new Date());
     var users = Model.User.findAll();
 

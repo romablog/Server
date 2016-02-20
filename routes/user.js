@@ -73,7 +73,7 @@ exports.setUserAvatar = function (req, res) {
 };
 
 exports.getSpecificUser = function(req, res) {
-    Model.User.findById(req.params.id)
+    Model.User.findOne({where:{id:req.params.id}, include:[Model.Medal]})
         .then(function(user) {
             console.log("USERRRRRRRRRRRRRRRRRRRRRRRRRRR", user);
             if (user) {

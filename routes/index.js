@@ -10,7 +10,6 @@ module.exports = function(app) {
     app.get('/post/:id', require('./post').getSpecificPost);
     app.delete('/post/:id', require('./post').delete);
     app.get('/posts/:id', require('./post').allForUser);
-    app.get('/checkPost', require('./post').check);
 
     app.get('/tags', require('./post').getTags);
     app.get('/currentUser', require('./user').get);
