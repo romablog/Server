@@ -75,6 +75,7 @@ var User = sequelize.define('user', {
     firstName: Sequelize.STRING,
     lastName: Sequelize.STRING,
     about: Sequelize.STRING,
+    rating: {type: Sequelize.DECIMAL, defaultValue: 0},
     email: {
         type: Sequelize.STRING
     }
@@ -96,10 +97,12 @@ var Comment = sequelize.define('comment', {
 var CommentRating = sequelize.define('comment_rating', {});
 var Medal = sequelize.define('medal', {
     name: Sequelize.TEXT,
+    level: Sequelize.INTEGER,
     imageLink: Sequelize.STRING
 });
 
 User.hasMany(Creative);
+
 
 Creative.belongsToMany(Tag, {through: "CreativeTag"});
 Tag.belongsToMany(Creative, {through: "CreativeTag"});
@@ -150,7 +153,6 @@ var Model = {
     },
     AddLikables: function (creatives, creativeRatings, user) {
         var alreadyRated = creativeRatings.some(function (creativeRating) {
-            //console.log("CRE USER & USER", creativeRating.userId, user.id);
             return creativeRating.userId == user.id;
         });
     },
@@ -191,43 +193,68 @@ var Model = {
     DestroyTags: DestroyTags
 };
 
-sequelize.sync({}).then(function () {
+sequelize.sync({force: true}).then(function () {
     //return Model.User.create({firstName: 'JOHN', lastName: 'DOE', email: 'roma@roma.roma', password: 'roma', authId: "12345", language:"en", theme: "light"});
-    //return Promise.all([
-    //        Model.Tag.create({
-    //            name: 'bound'
-    //        }),
-    //        Model.Tag.create({
-    //            name: 'unbound'
-    //        }),
-    //        Model.Creative.create({
-    //            title: 'title',
-    //            article: 'article'
-    //        }), Model.Creative.create({
-    //            title: 'title2',
-    //            article: 'article2'
-    //        }),
-    //        Model.CreativeRating.create({
-    //            score: -3
-    //        }),
-    //        Model.User.create({
-    //            firstName: 'JOHN',
-    //            lastName: 'DOE',
-    //            email: 'roma@roma.roma',
-    //            password: 'roma',
-    //            authId: "12345"
-    //        })])
-    //    .spread(function (bound, unbound, creative1, creative2, rating, johnny) {
-    //        // console.log(johnny);
-    //        return [
-    //            creative1,
-    //            creative1.addTag(bound),
-    //            bound.addCreative(creative1),
-    //            johnny.addCreative(creative1),
-    //            johnny.addCreative(creative2),
-    //            creative1.addCreativeRating(rating)
-    //        ]
-    //    });
+    return Promise.all([
+            Model.Creative.create({
+                title: 'title',
+                article: 'article'
+            }), Model.Creative.create({
+                title: 'title2',
+                article: 'article2'
+            }),
+            Model.CreativeRating.create({
+                score: -3
+            }),
+            Model.User.create({
+                firstName: 'JOHN',
+                lastName: 'DOE',
+                email: 'roma@roma.roma',
+                password: 'roma',
+                authId: "12345"
+            }), Model.Medal.create({
+                name: 'bestPost',
+                level: 1
+            }), Model.Medal.create({
+                name: 'bestPost',
+                level: 2
+            }), Model.Medal.create({
+                name: 'bestPost',
+                level: 3
+            }), Model.Medal.create({
+                name: 'badPost',
+                level: 1
+            }), Model.Medal.create({
+                name: 'badPost',
+                level: 2
+            }), Model.Medal.create({
+                name: 'badPost',
+                level: 3
+            }), Model.Medal.create({
+                name: '100posts',
+                level: 3
+            }), Model.Medal.create({
+                name: 'firstPost',
+                level: 3
+            }), Model.Medal.create({
+                name: 'topRating',
+                level: 1
+            }), Model.Medal.create({
+                name: 'topRating',
+                level: 2
+            }),  Model.Medal.create({
+                name: 'topRating',
+                level: 3
+            })])
+        .spread(function (creative1, creative2, rating, johnny, medals) {
+            // console.log(johnny);
+            return [
+                creative1,
+                johnny.addCreative(creative1),
+                johnny.addCreative(creative2),
+                creative1.addCreativeRating(rating)
+            ]
+        });
 });
 
 exports.Model = Model;
