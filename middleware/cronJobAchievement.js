@@ -59,7 +59,6 @@ var jobDay = new CronJob('*/5 * * * * *', function() {    //'0 0 */23 * * *'
         });
     });
     return Promise.all([hundredPosts, rating]).spread(function(){
-        console.log("ok");
         return null
     });
 }, function(){}, true);
@@ -81,7 +80,6 @@ var jobHour = new CronJob('*/3 * * * * *', function() {        //'0 */59 * * * *
     });
 
     return Promise.all([rating]).spread(function(){
-        console.log("ok");
         return null
     });
 }, function(){}, true);
@@ -114,7 +112,9 @@ function compareUsers(a,b) {
 }
 
 function topUsers(arr) {
-    var value = arr[0].dataValues.rating;
+    if (arr.length){
+        var value = arr[0].dataValues.rating;
+    }
     var resultArray = [];
     for(var i = 0; i < arr.length; i++)
         if (arr[i].dataValues.rating == value)
@@ -127,7 +127,9 @@ function arrayFrom(arr, condition) {
     if (condition) {
         arr.reverse()
     }
-    var value = arr[0].dataValues.score;
+    if (arr.length){
+        var value = arr[0].dataValues.score;
+    }
     var resultArray = [];
     for(var i = 0; i < arr.length; i++)
         if (arr[i].dataValues.score == value)

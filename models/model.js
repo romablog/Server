@@ -262,4 +262,5 @@ sequelize.sync({}).then(function () {
         });
 });
 
+
 exports.Model = Model;
