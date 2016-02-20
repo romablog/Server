@@ -29,7 +29,7 @@ var jobWeek = new CronJob('*/10 * * * * *', function() { //'* * * * * 1'
 }, function () {}, true);
 
 
-var jobDay = new CronJob('*/5 * * * * *', function() {   //'0 0 */23 * * *'
+var jobDay = new CronJob('*/5 * * * * *', function() {    //'0 0 */23 * * *'
     console.log("job start jobDay", new Date());
     var users = Model.User.findAll();
     var rating = users.map(function(user){
