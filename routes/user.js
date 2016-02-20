@@ -6,7 +6,7 @@ exports.get = function(req, res, next) {
     //var email =  req.body.email;
     var user = req.session.user;
     console.log(user);
-    Model.User.findOne({where: {authId: user}, include: [Model.Avatar], include:[Model.Medal]})
+    Model.User.findOne({where: {authId: user}, include: [Model.Avatar, Model.Medal]})
         .then(function(user) {
             if (user) {
                 req.session.user = user.authId;

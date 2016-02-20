@@ -32,17 +32,6 @@ var jobWeek = new CronJob('*/10 * * * * *', function() { //'* * * * * 1'
 var jobDay = new CronJob('*/5 * * * * *', function() {    //'0 0 */23 * * *'
     console.log("job start jobDay", new Date());
     var users = Model.User.findAll();
-    var rating = users.map(function(user){
-        return getCreativesWitnRatingForUser(user).then(function(creatives){
-            var rating = 0;
-            return Promise.all(creatives.map(function(creative){
-                return rating += creative.dataValues.score;
-            })).then(function(){
-                rating /= creatives.length;
-                user.update({rating: rating})
-            });
-        });
-    });
 
     var hundredPosts = users.map(function(user){
         return user.getCreatives().then(function(creatives){
@@ -58,7 +47,7 @@ var jobDay = new CronJob('*/5 * * * * *', function() {    //'0 0 */23 * * *'
             return null
         });
     });
-    return Promise.all([hundredPosts, rating]).spread(function(){
+    return Promise.all([hundredPosts]).spread(function(){
         return null
     });
 }, function(){}, true);
@@ -73,7 +62,9 @@ var jobHour = new CronJob('*/3 * * * * *', function() {        //'0 */59 * * * *
             return Promise.all(creatives.map(function(creative){
                 return rating += creative.dataValues.score;
             })).then(function(){
-                rating /= creatives.length;
+                if (creatives.length){
+                    rating /= creatives.length;
+                }
                 user.update({rating: rating})
             });
         });
