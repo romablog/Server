@@ -98,7 +98,7 @@ var CommentRating = sequelize.define('comment_rating', {});
 var Medal = sequelize.define('medal', {
     name: Sequelize.TEXT,
     level: Sequelize.INTEGER,
-    imageLink: Sequelize.STRING
+    link: Sequelize.STRING
 });
 
 User.hasMany(Creative);
