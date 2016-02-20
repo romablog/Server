@@ -37,7 +37,7 @@ app.use(session({
   resave: true,
   saveUninitialized: true
 }));
-//require('./libs/cronJobForElastic');
+require('./libs/cronJobForElastic');
 require('./middleware/cronJobAchievement');
 require('./middleware/passportAuth');
 
