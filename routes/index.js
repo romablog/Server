@@ -16,7 +16,12 @@ module.exports = function(app) {
     app.get('/user/:id', require('./user').getSpecificUser);
     app.get('/ratedarticles', require('./rating').getRatedCreatives);
     app.post('/rate', require('./rating').rateCreative);
+    app.post('/ratecomment', require('./comment').rateComment);
     app.post('/avatar', require('./user').setUserAvatar);
+
+    app.post('/comment/save', require('./comment').post);
+    app.post('/comment/all', require('./comment').all);
+    app.post('/comment/like', require('./comment').like);
 
     app.post('/updateuser', require('./user').setThemeAndLang);
     app.post('/update',require('./user').updateUser);

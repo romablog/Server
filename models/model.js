@@ -94,7 +94,7 @@ var UserRating = sequelize.define('user_rating', {
 var Comment = sequelize.define('comment', {
     body: Sequelize.TEXT
 });
-var CommentRating = sequelize.define('comment_rating', {});
+var CommentRating = sequelize.define('CommentRating', {});
 var Medal = sequelize.define('medal', {
     name: Sequelize.TEXT,
     level: Sequelize.INTEGER,
