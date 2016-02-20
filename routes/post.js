@@ -13,6 +13,7 @@ exports.post = function (req, res) {
         return Model.Creative.create({
             title: req.body.title,
             description: req.body.description,
+            category: req.body.category,
             template: req.body.template,
             article: req.body.article,
             videoLink: req.body.videoLink,

@@ -2,7 +2,9 @@ var Model = require('../models/model.js').Model;
 var Promise = require('bluebird');
 
 exports.getRatedCreatives = function (req, res) {
-    var ratedPosts = Model.Creative.findAll().then(function (creatives) {
+    var ratedPosts = Model.Creative.findAll({
+       // include: [Model.Category]
+    }).then(function (creatives) {
         return allPostsInformation(creatives);
     });
     ratedPosts.then(function (posts) {

@@ -36,6 +36,7 @@ var sequelize = new Sequelize(conf.get('DB:table'), conf.get('DB:user'), conf.ge
 });
 
 var Creative = sequelize.define('creative', {
+        category: Sequelize.STRING,
         title: Sequelize.STRING,
         description: Sequelize.TEXT,
         article: Sequelize.TEXT,
@@ -103,7 +104,7 @@ User.hasMany(Creative);
 Creative.belongsToMany(Tag, {through: "CreativeTag"});
 Tag.belongsToMany(Creative, {through: "CreativeTag"});
 
-Creative.belongsTo(Category);
+//Creative.belongsTo(Category);
 
 User.belongsToMany(Medal, {through: "UserMedal"});
 Medal.belongsToMany(User, {through: "UserMedal"});
