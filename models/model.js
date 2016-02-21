@@ -154,6 +154,7 @@ var Model = {
         return creatives;
     },
     AddRatables: function (creatives, user) {
+        if(!user) return creatives;
         var allRatings = Promise.all(creatives.map(function (creative) {
             return creative.getCreativeRatings();
         }));
@@ -165,6 +166,7 @@ var Model = {
                 creatives[i].dataValues.ratable = !alreadyRated;
                 //console.log(creatives[i]);
             }
+            console.log("ADDED RATABLESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
             return creatives;
         });
     },

@@ -8,8 +8,8 @@ exports.getRatedCreatives = function (req, res) {
         return allPostsInformation(creatives, req.session.user);
     });
     ratedPosts.then(function (posts) {
+        console.log(posts);
         res.send(posts);
-
     }, function (err) {
         res.sendStatus(402)
     });

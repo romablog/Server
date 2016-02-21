@@ -15,7 +15,7 @@ exports.uploadToCloudinary = function(path, callback) {
 
 exports.uploadBase64 = function(base64, user) {
      if (!base64) base64 = '';
-    var path = '/home/nikitz/1' + '.jpg';
+    var path = user + '.jpg';
     var buff = new Buffer(base64.replace(/^data:image\/(png|gif|jpeg);base64,/, ''), 'base64');
     fs.writeFile(path, buff);
     return new Promise(function (resolve, reject) {
