@@ -14,6 +14,22 @@ AddUsers =
             return result;
         });
     };
+AddLikes =
+    function (comments, user) {
+        return Promise.all(comments.map(function (comment) {
+                return comment.getCommentRatings();
+            }))
+            .then(function (likes) {
+                for (var i = 0; i < comments.length; i++) {
+                    comments[i].dataValues.likes = likes[i].length;
+                    var alreadyLiked = likes[i].some(function (like) {
+                        return like.dataValues.userId == user.id;
+                    });
+                    comments[i].dataValues.likable = !alreadyLiked;
+                }
+                return comments;
+            });
+    };
 exports.post = function (req, res) {
     var comment = Model.Comment.create({
         body: req.body.body
@@ -37,51 +53,55 @@ exports.post = function (req, res) {
 };
 
 
-exports.rateComment = function (req, res) {
-    var id = req.body.id;
-    var sum = 0;
-    var currentUser =
-        Model.User.findOne({where: {authId: req.session.user}});
-    var currentComment =
-        Model.Comment.findById(id);
-    var commentRatings =
-        currentComment.then(function (comment) {
-            return comment.getCommentRatings();
-        });
-    var userRatings =
-        currentUser.then(function (user) {
-            return user.getCreativeRatings();
-        });
-
-    Promise.all([commentRatings, userRatings, currentUser])
-        .spread(function (commentRatings, userRatings, user) {
-            var alreadyRated = commentRatings.some(function (commentRating) {
-                return commentRating.userId == user.id;
-            });
-            if (alreadyRated) {
-                res.sendStatus(403);
-            } else {
-                return [Model.CommentRating.create({}), currentUser, currentComment];
-            }
-        })
-        .spread(function (commentRating, user, comment) {
-            return [user.addCommentRating(commentRating), comment.addCommentRating(commentRating)];
-        })
-        .then(function () {
-            res.sendStatus(200);
-        });
-};
+//exports.rateComment = function (req, res) {
+//    var id = req.body.id;
+//    var sum = 0;
+//    var currentUser =
+//        Model.User.findOne({where: {authId: req.session.user}});
+//    var currentComment =
+//        Model.Comment.findById(id);
+//    var commentRatings =
+//        currentComment.then(function (comment) {
+//            return comment.getCommentRatings();
+//        });
+//    var userRatings =
+//        currentUser.then(function (user) {
+//            return user.getCreativeRatings();
+//        });
+//
+//    Promise.all([commentRatings, userRatings, currentUser])
+//        .spread(function (commentRatings, userRatings, user) {
+//            var alreadyRated = commentRatings.some(function (commentRating) {
+//                //console.log("CRE USER & USER", creativeRating.userId, user.id );
+//                return commentRating.userId == user.id;
+//            });
+//            if (alreadyRated) {
+//                res.sendStatus(403);
+//            } else {
+//                return [Model.CommentRating.create({}), currentUser, currentComment];
+//            }
+//        })
+//        .spread(function (commentRating, user, comment) {
+//            return [user.addCommentRating(commentRating), comment.addCommentRating(commentRating)];
+//        })
+//        .then(function () {
+//            res.sendStatus(200);
+//        });
+//};
 
 exports.all = function (req, res) {
     var id = req.body.id;
 
-
+    var currentUser = Model.User.find({where:{authId:req.session.user}});
     var creative = Model.Creative.findById(id);
     var comments = creative
         .then(function (creative) {
             return creative.getComments();
         });
-    comments
+    Promise.all([comments, currentUser])
+        .spread(
+            AddLikes
+        )
         .then(function (comments) {
             return [comments, Promise.all(comments.map(function (comment) {
                 return comment.getUser()

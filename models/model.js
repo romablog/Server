@@ -15,8 +15,12 @@ DestroyTags = function (creative) {
     var allTags = Model.Tag.findAll();
     return Promise.all([creativeTags, allTags])
         .spread(function (creativeTags, allTags) {
-            var creativeIds = creativeTags.map(function(tag) {return tag.id});
-            var allIds = allTags.map(function(tag) {return tag.id});
+            var creativeIds = creativeTags.map(function (tag) {
+                return tag.id
+            });
+            var allIds = allTags.map(function (tag) {
+                return tag.id
+            });
             var diff = allIds.diff(creativeIds);
             var toDelete = creativeIds.diff(diff);
             return Model.Tag.destroy({ where: {id: toDelete}});
@@ -149,9 +153,19 @@ var Model = {
         }
         return creatives;
     },
-    AddLikables: function (creatives, creativeRatings, user) {
-        var alreadyRated = creativeRatings.some(function (creativeRating) {
-            return creativeRating.userId == user.id;
+    AddRatables: function (creatives, user) {
+        var allRatings = Promise.all(creatives.map(function (creative) {
+            return creative.getCreativeRatings();
+        }));
+        return allRatings.then(function (allRatings) {
+            for (var i = 0; i < allRatings.length; i++) {
+               // console.log("allRating", allRatings[i])
+                var alreadyRated = allRatings[i].some(function (rating) {
+                    return rating.dataValues.userId == user.id;});
+                creatives[i].dataValues.ratable = !alreadyRated;
+                //console.log(creatives[i]);
+            }
+            return creatives;
         });
     },
     AddUsers: function (creatives) {
@@ -182,7 +196,6 @@ var Model = {
                         creatives[i].dataValues.tags = tagValues;
                     }
                 }).then(function () {
-
                     resolve(creatives);
                 });
         });

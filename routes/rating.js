@@ -3,31 +3,37 @@ var Promise = require('bluebird');
 
 exports.getRatedCreatives = function (req, res) {
     var ratedPosts = Model.Creative.findAll({
-       // include: [Model.Category]
+        // include: [Model.Category]
     }).then(function (creatives) {
-        return allPostsInformation(creatives);
+        return allPostsInformation(creatives, req.session.user);
     });
     ratedPosts.then(function (posts) {
         res.send(posts);
+
     }, function (err) {
         res.sendStatus(402)
     });
 };
 
-function allPostsInformation(creatives) {
+function allPostsInformation(creatives, user) {
     var ratings = Promise.all(creatives.map(function (creative) {
         return creative.getCreativeRatings();
     }));
+    var currentUser = Model.User.find({where: {authId:user}});
     return Promise.all([creatives, ratings])
         .spread(
             Model.AddScores
         ).then(
             Model.AddUsers
-        ).then(function(creatives) {
+        ).then(function (creatives) {
             return creatives.sort().reverse().slice(0, 50);
         }).then(
             Model.AddTags
-        );
+        ).then(function (creatives) {
+            return [creatives, currentUser]})
+        .spread(function(creatives, currentUser){
+            return Model.AddRatables(creatives, currentUser);
+        });
 }
 exports.allPostsInformation = allPostsInformation;
 
