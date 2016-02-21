@@ -43,7 +43,7 @@ exports.post = function (req, res) {
             return [comment, user, comment.setUser(user),  creative.addComment(comment)]
         })
         .spread(function (comment,user) {
-            if (comment) {;
+            if (comment) {
                 comment.dataValues.user = user.dataValues;
                 res.send(comment.dataValues);
             } else {

@@ -15,8 +15,8 @@ var jobWeek = new CronJob('*/10 * * * * *', function() { //'* * * * * 1'
         var userArray = [].concat.apply([], users);
         return [result.sort(compareCreatives), userArray.sort(compareUsers)];
     }).spread(function(result, users){
-        var firstSet = setMedalsForCreatives("bestPost", arrayFrom(result, 0));
-        var secondSet = setMedalsForCreatives("badPost", arrayFrom(result, 1));
+        var firstSet = setMedalsForCreatives("bestPost", arrayFrom(result));
+        var secondSet = setMedalsForCreatives("badPost", arrayFrom(result));
         var topUsersArr = topUsers(users);
         var userSet = topUsersArr.map(function (user) {
             return setMedalForUser("topRating", user);
@@ -28,21 +28,18 @@ var jobWeek = new CronJob('*/10 * * * * *', function() { //'* * * * * 1'
 }, function () {}, true);
 
 
-var jobDay = new CronJob('*/5 * * * * *', function() {    //'0 0 */23 * * *'
+var jobDay = new CronJob('*/10 * * * * *', function() {    //'0 0 */23 * * *'
     var users = Model.User.findAll();
 
     var hundredPosts = users.map(function(user){
         return user.getCreatives().then(function(creatives){
-            if (user.getMedals({where:{name:"firstPost"}})){
-                setMedalForUser("firstPost", user)
+            if (creatives.length){
+                var setfirst = setMedalForUser("firstPost", user)
             }
             if (creatives.length >= 100){
-                var medal = user.getMedals({where:{name:"100posts"}});
-                if (!medal){
-                    return setMedalForUser("100posts", user);
-                }
+                var setHundred = setMedalForUser("100posts", user);
             }
-            return null
+            return Promise.all([setfirst, setHundred])
         });
     });
     return Promise.all([hundredPosts]).spread(function(){
@@ -50,7 +47,7 @@ var jobDay = new CronJob('*/5 * * * * *', function() {    //'0 0 */23 * * *'
     });
 }, function(){}, true);
 
-var jobHour = new CronJob('*/3 * * * * *', function() {        //'0 */59 * * * *'
+var jobHour = new CronJob('*/5 * * * * *', function() {        //'0 */59 * * * *'
     var users = Model.User.findAll();
 
     var rating = users.map(function(user){
@@ -101,6 +98,7 @@ function compareUsers(a,b) {
 
 function topUsers(arr) {
     if (arr.length){
+        arr.reverse();
         var value = arr[0].dataValues.rating;
     }
     var resultArray = [];
@@ -112,9 +110,7 @@ function topUsers(arr) {
 }
 
 function arrayFrom(arr, condition) {
-    if (condition) {
-        arr.reverse()
-    }
+    arr.reverse();
     if (arr.length){
         var value = arr[0].dataValues.score;
     }
@@ -151,7 +147,8 @@ function setMedalForUser(medalName, user){
         var level = getNextLevel(medals, medalName);
         if (level && (level <= 3)){
             if ((medalName == "firstPost") || (medalName == "100Posts"))
-                level = 3;;
+                level = 3;
+            console.log("USER ", user.dataValues.firstName, " GET MEDAL ", medalName, " OF LEVEL ", level);
             return Model.Medal.findOne({where: {name:medalName, level: level}}).then(function(medal){
                 return user.addMedal(medal);
             })

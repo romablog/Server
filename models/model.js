@@ -205,74 +205,52 @@ var Model = {
     DestroyTags: DestroyTags
 };
 
-sequelize.sync({}).then(function () {
-    //return Model.User.create({firstName: 'JOHN', lastName: 'DOE', email: 'roma@roma.roma', password: 'roma', authId: "12345", language:"en", theme: "light"});
-    return Promise.all([
-            //Model.Creative.create({
-            //    title: 'title',
-            //    article: 'article'
-            //}), Model.Creative.create({
-            //    title: 'title2',
-            //    article: 'article2'
-            //}),
-            //Model.CreativeRating.create({
-            //    score: -3
-            //}),
-            //Model.User.create({
-            //    firstName: 'JOHN',
-            //    lastName: 'DOE',
-            //    email: 'roma@roma.roma',
-            //    password: 'roma',
-            //    authId: "12345"
-            Model.Medal.create({
-                name: 'bestPost',
-                level: 1,
-                link: 'http://res.cloudinary.com/doz0bmuqp/image/upload/v1455990168/bronze_best_post_xcxbwo.png'
-            }), Model.Medal.create({
-                name: 'bestPost',
-                level: 2,
-                link: 'http://res.cloudinary.com/doz0bmuqp/image/upload/v1455990169/silver_best_post_cnflug.png'
-            }), Model.Medal.create({
-                name: 'bestPost',
-                level: 3,
-                link: 'http://res.cloudinary.com/doz0bmuqp/image/upload/v1455990168/gold_best_post_qa8uax.png'
-            }), Model.Medal.create({
-                name: 'badPost',
-                level: 1,
-                link: 'http://res.cloudinary.com/doz0bmuqp/image/upload/v1455990168/bronze_worst_post_ylbodc.png'
-            }), Model.Medal.create({
-                name: 'badPost',
-                level: 2,
-                link: 'http://res.cloudinary.com/doz0bmuqp/image/upload/v1455990169/silver_worst_post_p2f8tb.png'
-            }), Model.Medal.create({
-                name: 'badPost',
-                level: 3,
-                link: 'http://res.cloudinary.com/doz0bmuqp/image/upload/v1455990169/gold_worst_post_tqi1kw.png'
-            }), Model.Medal.create({
-                name: '100posts',
-                level: 3,
-                link: 'http://res.cloudinary.com/doz0bmuqp/image/upload/v1455990167/100_posts_gold_ecq3bg.png'
-            }), Model.Medal.create({
-                name: 'firstPost',
-                level: 3,
-                link: 'http://res.cloudinary.com/doz0bmuqp/image/upload/v1455990168/first_post_gold_gu5mpt.png'
-            }), Model.Medal.create({
-                name: 'topRating',
-                level: 1,
-                link: 'http://res.cloudinary.com/doz0bmuqp/image/upload/v1455990167/best_user_bronze_ddumqi.png'
-            }), Model.Medal.create({
-                name: 'topRating',
-                level: 2,
-                link: 'http://res.cloudinary.com/doz0bmuqp/image/upload/v1455990167/best_user_silver_gg6lr3.png'
-            }),  Model.Medal.create({
-                name: 'topRating',
-                level: 3,
-                link: 'http://res.cloudinary.com/doz0bmuqp/image/upload/v1455990167/best_user_gold_rabmmk.png'
-            })])
-        .spread(function (medals) {
-            return
-        });
-});
-
+//sequelize.sync({force:true}).then(function () {
+//    return Promise.all([
+//            Model.Medal.create({
+//                name: 'bestPost',
+//                level: 1,
+//                link: 'http://res.cloudinary.com/doz0bmuqp/image/upload/v1455990168/bronze_best_post_xcxbwo.png'
+//            }), Model.Medal.create({
+//                name: 'bestPost',
+//                level: 2,
+//                link: 'http://res.cloudinary.com/doz0bmuqp/image/upload/v1455990169/silver_best_post_cnflug.png'
+//            }), Model.Medal.create({
+//                name: 'bestPost',
+//                level: 3,
+//                link: 'http://res.cloudinary.com/doz0bmuqp/image/upload/v1455990168/gold_best_post_qa8uax.png'
+//            }), Model.Medal.create({
+//                name: 'badPost',
+//                level: 1,
+//                link: 'http://res.cloudinary.com/doz0bmuqp/image/upload/v1455990168/bronze_worst_post_ylbodc.png'
+//            }), Model.Medal.create({
+//                name: 'badPost',
+//                level: 2,
+//                link: 'http://res.cloudinary.com/doz0bmuqp/image/upload/v1455990169/silver_worst_post_p2f8tb.png'
+//            }), Model.Medal.create({
+//                name: 'badPost',
+//                level: 3,
+//                link: 'http://res.cloudinary.com/doz0bmuqp/image/upload/v1455990169/gold_worst_post_tqi1kw.png'
+//            }), Model.Medal.create({
+//                name: '100posts',
+//                level: 3,
+//                link: 'http://res.cloudinary.com/doz0bmuqp/image/upload/v1455990167/100_posts_gold_ecq3bg.png'
+//            }), Model.Medal.create({
+//                name: 'firstPost',
+//                level: 3,
+//                link: 'http://res.cloudinary.com/doz0bmuqp/image/upload/v1455990168/first_post_gold_gu5mpt.png'
+//            }), Model.Medal.create({
+//                name: 'topRating',
+//                level: 1,
+//                link: 'http://res.cloudinary.com/doz0bmuqp/image/upload/v1455990167/best_user_bronze_ddumqi.png'
+//            }), Model.Medal.create({
+//                name: 'topRating',
+//                level: 2,
+//                link: 'http://res.cloudinary.com/doz0bmuqp/image/upload/v1455990167/best_user_silver_gg6lr3.png'
+//            }),  Model.Medal.create({
+//                name: 'topRating',
+//                level: 3,
+//                link: 'http://res.cloudinary.com/doz0bmuqp/image/upload/v1455990167/best_user_gold_rabmmk.png'
+//            })])});
 
 exports.Model = Model;
