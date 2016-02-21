@@ -25,7 +25,7 @@ AddLikes =
                     var alreadyLiked = likes[i].some(function (like) {
                         return like.dataValues.userId == user.id;
                     });
-                    comments[i].dataValues.likable = !alreadyLiked;
+                    comments[i].dataValues.likeable = !alreadyLiked;
                 }
                 return comments;
             });
