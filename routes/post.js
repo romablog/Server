@@ -4,9 +4,7 @@ var cloudinary = require('../libs/cloudinary');
 var fs = require('fs');
 
 exports.post = function (req, res) {
-    console.log(req.body);
     var creative = cloudinary.uploadBase64(req.body.img, req.session.user).then(function (upload) {
-        console.log(upload);
         var map;
         if (req.body.map)
             map = [req.body.map.currentX, req.body.map.currentY, req.body.map.pointX, req.body.map.pointY];

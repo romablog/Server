@@ -15,7 +15,6 @@ AddUsers =
         });
     };
 exports.post = function (req, res) {
-    console.log("BEFORE EVERYTHING", req.body);
     var comment = Model.Comment.create({
         body: req.body.body
     });
@@ -23,17 +22,13 @@ exports.post = function (req, res) {
         where: {authId: req.session.user}
     });
     var creative = Model.Creative.findById(req.body.id);
-    console.log("BEFORE PROMISE");
     Promise.all([user, creative, comment])
         .spread(function (user, creative, comment) {
-            console.log(comment);
             return [comment, user, comment.setUser(user),  creative.addComment(comment)]
         })
         .spread(function (comment,user) {
-            if (comment) {
-                console.log('USER VALUE',user.dataValues);
+            if (comment) {;
                 comment.dataValues.user = user.dataValues;
-                console.log("FUKKEN SAVED", comment.dataValues);
                 res.send(comment.dataValues);
             } else {
                 res.sendStatus(403);
@@ -61,7 +56,6 @@ exports.rateComment = function (req, res) {
     Promise.all([commentRatings, userRatings, currentUser])
         .spread(function (commentRatings, userRatings, user) {
             var alreadyRated = commentRatings.some(function (commentRating) {
-                //console.log("CRE USER & USER", creativeRating.userId, user.id );
                 return commentRating.userId == user.id;
             });
             if (alreadyRated) {
@@ -80,7 +74,7 @@ exports.rateComment = function (req, res) {
 
 exports.all = function (req, res) {
     var id = req.body.id;
-    console.log(id);
+
 
     var creative = Model.Creative.findById(id);
     var comments = creative
@@ -99,7 +93,6 @@ exports.all = function (req, res) {
                 comments[i].dataValues.user = users[i].dataValues;
                 result.push(comments[i].dataValues);
             }
-            console.log(result);
             res.send(result);
         });
 };
@@ -125,7 +118,6 @@ exports.like = function (req, res) {
         .spread(function (likes, users, user) {
 
             var alreadyRated = users.some(function (item) {
-                //console.log("CRE USER & USER", creativeRating.userId, user.id );
                 return item.id == user.id;
             });
             if (alreadyRated) {

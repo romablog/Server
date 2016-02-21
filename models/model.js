@@ -15,12 +15,10 @@ DestroyTags = function (creative) {
     var allTags = Model.Tag.findAll();
     return Promise.all([creativeTags, allTags])
         .spread(function (creativeTags, allTags) {
-            console.log('CREATIVE FOR TAG', creativeTags);
             var creativeIds = creativeTags.map(function(tag) {return tag.id});
             var allIds = allTags.map(function(tag) {return tag.id});
             var diff = allIds.diff(creativeIds);
             var toDelete = creativeIds.diff(diff);
-            console.log(allIds, creativeIds, diff);
             return Model.Tag.destroy({ where: {id: toDelete}});
         });
 };
@@ -164,7 +162,6 @@ var Model = {
             return Promise.all(userPromises).then(function (users) {
                 for (var i = 0; i < creatives.length; i++) {
                     creatives[i].dataValues.user = users[i].dataValues;
-                    //console.log(users[i].dataValues);
                 }
             }).then(function () {
                 resolve(creatives)

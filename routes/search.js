@@ -6,7 +6,6 @@ var Promise = require('bluebird');
 exports.get = function(req, res) {
 
     var tagPosts = elastic.getSuggestions("tag", req.params.input).then(function (result) {
-        console.log("TAG  ",result);
         var afterElastic = [];
         if (result.docsuggest){
             afterElastic = result.docsuggest[0].options;
@@ -19,7 +18,6 @@ exports.get = function(req, res) {
     });
 
     var userPosts = elastic.getSuggestions("user", req.params.input).then(function (result) {
-        console.log("USER  ",result);
         var afterElastic = [];
         if (result.docsuggest){
             afterElastic = result.docsuggest[0].options;
@@ -32,7 +30,6 @@ exports.get = function(req, res) {
     });
 
     var commentPosts = elastic.getSuggestions("comment", req.params.input).then(function (result) {
-        console.log("COMMENT  ",result);
         var afterElastic = [];
         if (result.docsuggest){
             afterElastic = result.docsuggest[0].options;
@@ -47,7 +44,6 @@ exports.get = function(req, res) {
     });
 
     var creativePosts = elastic.getSuggestions("creative", req.params.input).then(function (result) {
-        console.log("CREATIVE  ",result);
         var afterElastic = [];
         if (result.docsuggest){
             afterElastic = result.docsuggest[0].options;

@@ -4,7 +4,6 @@ var elastic = require('./elastic');
 var Promise = require('bluebird');
 
 var job = new CronJob('0 */1 * * * *', function() {
-    console.log("job start", new Date());
     var tag = elastic.initialize("tag");
     var user = elastic.initialize("user");
     var creative = elastic.initialize("creative");
@@ -15,7 +14,6 @@ var job = new CronJob('0 */1 * * * *', function() {
     var creatives = Model.Creative.findAll();
 
     Promise.all([tag,user,creative,comment, tags, users, comments, creatives]).spread(function(_,_,_,_, tags, users, comments, creatives) {
-        console.log("hello");
         var tagsPromises = tags.map(function (tag) {
             return elastic.add("tag",tag.name, tag.name);
         });
@@ -27,15 +25,12 @@ var job = new CronJob('0 */1 * * * *', function() {
         var commentsPromises = comments.map(function (comment) {
             return elastic.add("comment",comment.body, comment.body);
         });
-        console.log(creatives.length);
         var creativesPromises = creatives.map(function (creative) {
             return elastic.add("creative",creative.title +" "+ creative.article, creative.title);
         });
 
         return Promise.all([tagsPromises, usersPromises, commentsPromises, creativesPromises]).then(function() {
-            console.log("it's all!");
         })
     })}, function () {
-        console.log("time");
     }, true
 );

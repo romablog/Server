@@ -19,7 +19,6 @@ passport.use(new StrategyFB({
         clientSecret: config.get('FB:appSecret'),
         callbackURL: config.get('FB:callbackUrl')
     }, function (token, tokenSecret, profile, done) {
-    console.log(profile);
     Model.User.findOrCreate({where: {authId: profile.id}, defaults: {authId: profile.id}})
         .spread(function (user, created) {
             return done(null, user);
@@ -31,7 +30,6 @@ passport.use(new StrategyTW({
         consumerSecret: config.get('TW:appSecret'),
         callbackURL:  config.get('TW:callbackUrl')
     }, function (token, tokenSecret, profile, done) {
-    console.log(profile);
     Model.User.findOrCreate({where: {authId: profile.id.toString()}, defaults: {authId: profile.id.toString()}})
         .spread(function (user, created) {
             return done(null, user);
@@ -43,7 +41,6 @@ passport.use(new StrategyVK({
     clientSecret: config.get('VK:appSecret'),
     callbackURL:  config.get('VK:callbackUrl')
 },function (token, tokenSecret, profile, done) {
-    console.log(profile);
     Model.User.findOrCreate({where: {authId: profile.id.toString()}, defaults: {authId: profile.id.toString()}})
         .spread(function (user, created) {
             return done(null, user);

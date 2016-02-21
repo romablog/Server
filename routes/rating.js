@@ -54,7 +54,6 @@ exports.rateCreative = function (req, res) {
                 sum += rating.score;
             });
             var alreadyRated = creativeRatings.some(function (creativeRating) {
-                //console.log("CRE USER & USER", creativeRating.userId, user.id );
                 return creativeRating.userId == user.id;
             });
             if (alreadyRated) {

@@ -5,7 +5,6 @@ var cloudinary = require('../libs/cloudinary');
 exports.get = function(req, res, next) {
     //var email =  req.body.email;
     var user = req.session.user;
-    console.log(user);
     Model.User.findOne({where: {authId: user}, include: [Model.Avatar, Model.Medal]})
         .then(function(user) {
             if (user) {
@@ -18,7 +17,6 @@ exports.get = function(req, res, next) {
 };
 
 exports.setThemeAndLang = function (req, res) {
-    console.log(req.body);
     Model.User.findOne({where: {authId: req.session.user}})
         .then(function (user) {
             if (user) {
@@ -75,7 +73,6 @@ exports.setUserAvatar = function (req, res) {
 exports.getSpecificUser = function(req, res) {
     Model.User.findOne({where:{id:req.params.id}, include:[Model.Medal]})
         .then(function(user) {
-            console.log("USERRRRRRRRRRRRRRRRRRRRRRRRRRR", user);
             if (user) {
                 res.send(user);
             } else {

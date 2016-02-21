@@ -3,7 +3,6 @@ var Model = require('../models/model.js').Model;
 var Promise = require('bluebird');
 
 var jobWeek = new CronJob('*/10 * * * * *', function() { //'* * * * * 1'
-    console.log("job start jobWeek", new Date());
     var users = Model.User.findAll();
 
     var creativesWitnRating = users.map(function(user){
@@ -30,7 +29,6 @@ var jobWeek = new CronJob('*/10 * * * * *', function() { //'* * * * * 1'
 
 
 var jobDay = new CronJob('*/5 * * * * *', function() {    //'0 0 */23 * * *'
-    console.log("job start jobDay", new Date());
     var users = Model.User.findAll();
 
     var hundredPosts = users.map(function(user){
@@ -53,7 +51,6 @@ var jobDay = new CronJob('*/5 * * * * *', function() {    //'0 0 */23 * * *'
 }, function(){}, true);
 
 var jobHour = new CronJob('*/3 * * * * *', function() {        //'0 */59 * * * *'
-    console.log("job start jobHour", new Date());
     var users = Model.User.findAll();
 
     var rating = users.map(function(user){
@@ -154,8 +151,7 @@ function setMedalForUser(medalName, user){
         var level = getNextLevel(medals, medalName);
         if (level && (level <= 3)){
             if ((medalName == "firstPost") || (medalName == "100Posts"))
-                level = 3;
-            console.log("USER ", user.dataValues.authId," TAKE MEDAL ", medalName, " WITH LEVEL ", level);
+                level = 3;;
             return Model.Medal.findOne({where: {name:medalName, level: level}}).then(function(medal){
                 return user.addMedal(medal);
             })

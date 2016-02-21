@@ -15,13 +15,12 @@ exports.uploadToCloudinary = function(path, callback) {
 
 exports.uploadBase64 = function(base64, user) {
      if (!base64) base64 = '';
-    var path = user + '.jpg';
+    var path = '/home/nikitz/1' + '.jpg';
     var buff = new Buffer(base64.replace(/^data:image\/(png|gif|jpeg);base64,/, ''), 'base64');
     fs.writeFile(path, buff);
     return new Promise(function (resolve, reject) {
         cloudinary.uploader.upload(path, function (upload) {
             fs.unlink(path);
-            console.log("upload = ", upload);
             resolve(upload);
         });
     })
