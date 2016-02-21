@@ -15,8 +15,8 @@ var jobWeek = new CronJob('*/10 * * * * *', function() { //'* * * * * 1'
         var userArray = [].concat.apply([], users);
         return [result.sort(compareCreatives), userArray.sort(compareUsers)];
     }).spread(function(result, users){
-        var firstSet = setMedalsForCreatives("bestPost", arrayFrom(result));
-        var secondSet = setMedalsForCreatives("badPost", arrayFrom(result));
+        var firstSet = setMedalsForCreatives("badPost", arrayFrom(result));
+        var secondSet = setMedalsForCreatives("bestPost", arrayFrom(result.reverse()));
         var topUsersArr = topUsers(users);
         var userSet = topUsersArr.map(function (user) {
             return setMedalForUser("topRating", user);
@@ -109,8 +109,7 @@ function topUsers(arr) {
     return resultArray;
 }
 
-function arrayFrom(arr, condition) {
-    arr.reverse();
+function arrayFrom(arr) {
     if (arr.length){
         var value = arr[0].dataValues.score;
     }
