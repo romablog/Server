@@ -84,7 +84,7 @@ exports.getSpecificPost = function (req, res) {
         });
 };
 
-exports.getTags = function (req, res) {
+exports.getAllTags = function (req, res) {
     Model.Tag.findAll()
         .then(function (tags) {
             var names = tags.map(function(tag){

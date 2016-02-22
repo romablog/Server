@@ -11,7 +11,7 @@ module.exports = function(app) {
     app.delete('/post/:id', require('./post').delete);
     app.get('/posts/:id', require('./post').allForUser);
 
-    app.get('/tags', require('./post').getTags);
+    app.get('/tags', require('./post').getAllTags);
     app.get('/currentUser', require('./user').get);
     app.get('/user/:id', require('./user').getSpecificUser);
     app.get('/ratedarticles', require('./rating').getRatedCreatives);

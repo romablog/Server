@@ -42,7 +42,7 @@ var Creative = sequelize.define('creative', {
         title: Sequelize.STRING,
         description: Sequelize.TEXT,
         article: Sequelize.TEXT,
-        template: Sequelize.TEXT,
+        template: Sequelize.STRING,
         imageLink: Sequelize.STRING,
         videoLink: Sequelize.STRING,
         map: Sequelize.ARRAY(Sequelize.DECIMAL),
@@ -52,11 +52,15 @@ var Creative = sequelize.define('creative', {
     {
         hooks: {
             beforeDestroy: function (creative) {
-                cloudinary.destroy(creative.url);
-                DestroyTags(creative);
+                cloudinary.destroy(creative.publicId);
+                return DestroyTags(creative);
             }
         }
     });
+
+var Passport = sequelize.define('passport',{
+    user: Sequelize.STRING
+});
 
 var Avatar = sequelize.define('avatar', {
     url: Sequelize.STRING,
@@ -139,6 +143,7 @@ var Model = {
     Category: Category,
     Tag: Tag,
     Avatar: Avatar,
+    Passport: Passport,
     CreativeRating: CreativeRating,
     AddScores: function (creatives, ratings) {
         var sums = ratings.map(function (ratings) {
